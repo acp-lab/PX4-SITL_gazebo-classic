@@ -345,6 +345,70 @@
         <use_parent_model_frame>1</use_parent_model_frame>
       </axis>
     </joint>
+    <link name='camera_link'>
+      <pose>0.05 0 -0.05 0 0 0</pose>
+      <inertial>
+        <mass>0.001</mass>
+        <inertia>
+          <ixx>0.000001</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>0.000001</iyy>
+          <iyz>0</iyz>
+          <izz>0.000001</izz>
+        </inertia>
+      </inertial>
+      <visual name='camera_visual'>
+        <geometry>
+          <box>
+            <size>0.01 0.01 0.01</size>
+          </box>
+        </geometry>
+      </visual>
+      <sensor type='depth' name='camera_sensor'>
+        <pose>0 0 0 0 0 0</pose>
+        <always_on>0</always_on>
+        <update_rate>30</update_rate>
+        <visualize>true</visualize>
+        <camera name="camera_name">
+          <horizontal_fov>1.301</horizontal_fov>
+          <image>
+            <width>640</width>
+            <height>480</height>
+            <format>R8G8B8</format>
+          </image>
+          <clip>
+            <near>0.05</near>
+            <far>100</far>
+          </clip>
+          <intrinsics>
+            <cx>504.9070385123329</cx>
+            <cy>272.4789308324607</cy>
+            <fx>631.0084746290834</fx>
+            <fy>636.5226676728539</fy>
+          </intrinsics>
+        </camera>
+        <plugin name='camera_controller' filename='libgazebo_ros_camera.so'>
+          <ros>
+            <namespace>{{ros_namespace}}</namespace>
+          </ros>
+          <camera_name>camera</camera_name>
+          <frame_name>camera_link</frame_name>
+          <hack_baseline>0.07</hack_baseline>
+          <baseline>0.02</baseline>
+          <distortionK1>0.0</distortionK1>
+          <distortionK2>0.0</distortionK2>
+          <distortionK3>0.0</distortionK3>
+          <distortionT1>0.0</distortionT1>
+          <distortionT2>0.0</distortionT2>
+        </plugin>
+      </sensor>
+    </link>
+    <joint name='camera_joint' type='fixed'>
+      <parent>base_link</parent>
+      <child>camera_link</child>
+      <pose>0 0 0 0 0 0</pose>
+    </joint>
     <plugin name='rosbag' filename='libgazebo_multirotor_base_plugin.so'>
       <robotNamespace/>
       <linkName>base_link</linkName>
